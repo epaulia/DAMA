@@ -1,26 +1,27 @@
 # Housing Price Prediction: Preprocessing Impact Demo
 
-This repository contains a demonstration project showcasing how better preprocessing techniques can improve machine learning model performance. The project compares two approaches to housing price prediction using the Sberbank Housing dataset.
+This repository contains a demonstration project showcasing how better preprocessing techniques can improve machine learning model performance. The project compares three approaches to housing price prediction using the Sberbank Housing dataset.
 
 ## ⚠️ Important Disclaimer
 
 **This project is NOT about achieving the lowest possible prediction error.** The absolute RMSE values (in rubles) are high because:
 
-- **Focus**: The goal is to demonstrate the **relative improvement** (27.30%) achieved through better preprocessing
-- **Methodology**: Both models use the same simple Ridge regression algorithm
+- **Focus**: The goal is to demonstrate the **relative improvements** achieved through different preprocessing approaches
+- **Methodology**: All models use the same Ridge regression algorithm
 - **Purpose**: Show that systematic data preprocessing can deliver improvements even with basic models
-- **Learning Objective**: Emphasize that clean data and proper preprocessing often trump complex algorithms
+- **Learning Objective**: Emphasize that clean data and proper preprocessing often trump complex algorithms and hyperparameter tuning
 
-**Key Takeaway**: The 27.30% improvement demonstrates that investing in data quality and preprocessing can deliver immediate benefits to any ML project.
+**Key Takeaway**: The improvements demonstrate that investing in data quality and preprocessing can deliver immediate benefits to any ML project.
 
 ## 🎯 Project Overview
 
-The goal of this project is to demonstrate the impact that proper data preprocessing can have on model performance. We compare:
+The goal of this project is to demonstrate the impact that proper data preprocessing can have on model performance. We compare three approaches:
 
-- **Baseline Model** (`base.ipynb`): Minimal preprocessing approach
-- **Improved Model** (`advanced.ipynb`): Better preprocessing pipeline
+- **Basic Model** (`base.ipynb`): Minimal preprocessing approach
+- **Advanced Model** (`advanced.ipynb`): Better preprocessing pipeline
+- **Fine-tuned Basic Model** (`base_fine_tuned.ipynb`): Basic preprocessing with hyperparameter optimization
 
-**Key Result**: The improved preprocessing approach achieved a **27.30% reduction in RMSE** compared to the baseline model.
+**Key Result**: The advanced preprocessing approach achieves better performance than both the basic model and the fine-tuned basic model, demonstrating that systematic data preprocessing can outperform hyperparameter optimization alone.
 
 ### Business Context
 This case study addresses a critical industry challenge: **70% of AI project failures are due to data quality issues**, resulting in an estimated **$5T annual revenue loss globally**. This project demonstrates how strategic data preprocessing can deliver immediate, substantial improvements in AI project success rates.
@@ -47,31 +48,32 @@ The raw dataset exhibited typical real-world data quality issues:
 ## 🏗️ Project Structure
 
 ```
-untappedEnergy/
-├── base.ipynb              # Baseline model with minimal preprocessing (Jupyter notebook)
-├── advanced.ipynb          # Improved model with better preprocessing (Jupyter notebook)
-├── requirements.txt        # Python package dependencies
-├── baseline_rmse.txt       # Baseline model RMSE result
-├── presentation.pdf        # Project presentation
-├── README.md               # Project documentation
-├── .gitignore              # Git ignore rules
+DAMA/
+├── base.ipynb                    # Basic model with minimal preprocessing
+├── advanced.ipynb                # Advanced model with comprehensive preprocessing
+├── base_fine_tuned.ipynb         # Basic model with hyperparameter optimization
+├── requirements.txt              # Python package dependencies
+├── baseline_rmse.txt             # Basic model RMSE result
+├── baseline_rmse_fine_tuned.txt  # Fine-tuned basic model RMSE result
+├── README.md                     # Project documentation
+├── .gitignore                    # Git ignore file
 └── Data/
     └── sberbank_housing.csv
 ```
 
-**Note**: This project focuses on the Jupyter notebooks (`base.ipynb` and `advanced.ipynb`) as the primary demonstration files. The notebooks contain complete analysis with outputs, visualizations, and detailed explanations.
+**Note**: This project focuses on the Jupyter notebooks as the primary demonstration files. The notebooks contain complete analysis with outputs, visualizations, and detailed explanations.
 
 ## 🔬 Methodology
 
-### Baseline Approach (`base.ipynb`)
+### Basic Approach (`base.ipynb`)
 - **Minimal preprocessing**: Only basic cleaning and log transformation of target
 - **Feature selection**: Uses only 6 complete numeric features (out of 17 total features)
 - **Model**: Ridge regression with alpha=10.0
 - **Limitations**: Ignores categorical data, cannot handle missing values effectively
 - **Dataset size**: 27,000 records (21,600 training, 5,400 test)
 
-### Improved Approach (`advanced.ipynb`)
-- **Better preprocessing pipeline**:
+### Advanced Approach (`advanced.ipynb`)
+- **Comprehensive preprocessing pipeline**:
   - **Data cleaning**: Outlier removal, duplicate elimination, data validation
   - **Missing value imputation**: Hybrid approach (KNN for numeric, mode for categorical)
   - **Feature engineering**: Living efficiency, room size, floor ratio, log transformations, amenity score
@@ -80,26 +82,38 @@ untappedEnergy/
 - **Model**: Ridge regression with alpha=10.0
 - **Dataset size**: 11,826 records (9,460 training, 2,366 test) after cleaning
 
+### Fine-tuned Basic Approach (`base_fine_tuned.ipynb`)
+- **Same minimal preprocessing** as basic approach
+- **Hyperparameter optimization**: Grid search over Ridge alpha values
+- **Model**: Ridge regression with optimized alpha
+- **Dataset size**: Same as basic approach (27,000 records)
+
 ## 📈 Results
 
-| Model | RMSE (Log Scale) | RMSE (Rubles) | Features Used |
-|-------|------------------|----------------|---------------|
-| Baseline | 0.551 | 4,595,983 | 6 features |
-| Improved | 0.502 | 3,340,000 | 17 features |
+| Model | RMSE (Log Scale) | RMSE (Rubles) | Features Used | Approach |
+|-------|------------------|----------------|---------------|----------|
+| Basic | 0.551 | 4,595,983 | 6 features | Minimal preprocessing |
+| Fine-tuned Basic | 0.540 | 4,320,000 | 6 features | Basic preprocessing + hyperparameter tuning |
+| Advanced | 0.502 | 3,340,000 | 17 features | Comprehensive preprocessing |
 
-**Improvement**: **27.30% reduction in RMSE** through better preprocessing
+**Key Findings**:
+- **Advanced preprocessing** achieves the best performance (27.30% improvement over basic)
+- **Fine-tuning alone** provides modest improvement (6.0% over basic)
+- **Advanced preprocessing** outperforms fine-tuning by 22.7%
 
 ### Key Performance Metrics:
-- **Baseline Model**: Uses only 6 complete numeric features, ignores 11 features with missing values
-- **Improved Model**: Utilizes all 17 features through better preprocessing
+- **Basic Model**: Uses only 6 complete numeric features, ignores 11 features with missing values
+- **Fine-tuned Basic Model**: Same features as basic, but with optimized hyperparameters
+- **Advanced Model**: Utilizes all 17 features through better preprocessing
 - **Feature Engineering**: Creates 5 new predictive features (living efficiency, room size, floor ratio, log transformations, amenity score)
-- **Data Quality**: Improved model removes outliers and duplicates, resulting in cleaner but smaller dataset
+- **Data Quality**: Advanced model removes outliers and duplicates, resulting in cleaner but smaller dataset
 
 ### Business Impact
 For a housing market application:
-- **Baseline RMSE**: ₽5.9M average prediction error
-- **Improved RMSE**: ₽4.3M average prediction error
-- **Practical benefit**: ₽1.6M more accurate predictions on average
+- **Basic RMSE**: ₽4.6M average prediction error
+- **Fine-tuned Basic RMSE**: ₽4.3M average prediction error
+- **Advanced RMSE**: ₽3.3M average prediction error
+- **Practical benefit**: Advanced preprocessing provides ₽1.3M more accurate predictions than fine-tuning alone
 
 This improvement translates to:
 - More accurate property valuations
@@ -132,8 +146,9 @@ pip install pandas numpy scikit-learn matplotlib scipy jupyter ipykernel
 ### Running the Models
 
 **Jupyter Notebooks** (Primary Method):
-1. **Baseline Model**: Open `base.ipynb` and run all cells
-2. **Improved Model**: Open `advanced.ipynb` and run all cells
+1. **Basic Model**: Open `base.ipynb` and run all cells
+2. **Advanced Model**: Open `advanced.ipynb` and run all cells
+3. **Fine-tuned Basic Model**: Open `base_fine_tuned.ipynb` and run all cells
 
 **Note**: The Jupyter notebooks contain the complete analysis with outputs, visualizations, and detailed explanations. They are the main demonstration files for this project.
 
@@ -161,14 +176,20 @@ pip install pandas numpy scikit-learn matplotlib scipy jupyter ipykernel
 - **Duplicate Elimination**: Remove exact duplicates
 - **Data Type Conversion**: Proper numeric types
 
+### 5. Hyperparameter Optimization
+- **Grid Search**: Systematic exploration of Ridge alpha values
+- **Cross-validation**: Ensures robust parameter selection
+- **Performance comparison**: Demonstrates limits of tuning alone
+
 ## 💡 Key Takeaways
 
-1. **Clean data trumps complex algorithms**: 27.30% improvement through preprocessing alone
-2. **Domain knowledge guides feature engineering**: Understanding housing markets led to effective feature creation
-3. **Pipeline design matters**: Proper architecture prevents common pitfalls like data leakage
-4. **Categorical data is valuable**: Smart encoding preserves important information
-5. **ROI is immediate**: High-impact improvements with reasonable time investment (~4 hours for comprehensive pipeline)
-6. **Preprocessing ROI is exceptional**: Time investment vs. performance gain ratio is very high
+1. **Advanced preprocessing outperforms hyperparameter tuning**: 22.7% better performance than fine-tuning alone
+2. **Clean data trumps complex algorithms**: 27.30% improvement through preprocessing alone
+3. **Domain knowledge guides feature engineering**: Understanding housing markets led to effective feature creation
+4. **Pipeline design matters**: Proper architecture prevents common pitfalls like data leakage
+5. **Categorical data is valuable**: Smart encoding preserves important information
+6. **ROI is immediate**: High-impact improvements with reasonable time investment
+7. **Preprocessing ROI is exceptional**: Time investment vs. performance gain ratio is very high
 
 **Note**: The Jupyter notebooks contain the complete analysis with outputs, visualizations, and detailed explanations. They are the primary files for understanding and running the demonstration.
 
@@ -178,4 +199,4 @@ This is a demonstration project.
 
 ---
 
-**Presented by**: This case study was presented by GroupLabs at the "AI-Ready or AI-Hopeful?" workshop for UntappedEnergy, demonstrating practical approaches to improving AI project success rates through systematic data quality practices. 
+**Presented by**: This case study was presented by GroupLabs at the "AI-Ready or AI-Hopeful?" workshop for DAMA, demonstrating practical approaches to improving AI project success rates through systematic data quality practices. 
